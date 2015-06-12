@@ -21,29 +21,29 @@ is selected in the first activity, and the Criteria and Option that it masters a
 tabs; the framework automatically passes the master scorecard entity as context to these tabs.  The Scorecard
 activity is based on the list-form activity pattern.
 
-![Domain View](domain_view.jpg =850x)
+<img src="domain_view.jpg" alt="Domain View" width="850x">
 
 A read only summary 'dashlet' for the domain view can be toggled on and off; this will be visible irrespective of 
 whichever tab is selected.  It can be docked top, bottom, left or right, as is shown below.  Alternatively a
 non modal pop-up can be presented.
 
-![Dashlet](summ_dash.jpg =850x)
+<img src="summ_dash.jpg" alt="Dashlet" width="850x">
 
 ## Popup Activity Views
 
 Activity views can also be displayed as popup. The screenshot below illustrates a popup activity for creating a 
 template from an existing scorecard, based on a form activity pattern. 
 
-![Form Popup](form_popup.jpg =850x)
+<img src="form_popup.jpg" alt="Form Popup" width="850x">
 
 The following screenshot shows a full screen popup used to display a graphical view of option scores.
 
-![Fullscreen Popup](fullscreen_popup.jpg =850x)
+<img src="fullscreen_popup.jpg" alt="Fullscreen Popup" width="850x">
 
 Finally, a popup selector can be used to provide context, for example, in the screenshot below it is used to select
 an Evaluation Group to provide context into the Scorecard domain in a multi-tab view (see below).
 
-![Selector Popup](selector_popup.jpg =850x)
+<img src="selector_popup.jpg" alt="Selector Popup" width="850x">
 
 
 ## Multi Tab View
@@ -51,7 +51,7 @@ an Evaluation Group to provide context into the Scorecard domain in a multi-tab 
 Multiple domain views of the same type can be dynamically opened and closed along side one another in order
 to view multiple entities simultaneously.
 
-![Multi-Tab View](multi_view.jpg =850x)
+<img src="multi_view.jpg" alt="Multi Tab View" width="850x">
 
 
 ## Dashboard View
@@ -61,7 +61,7 @@ summary across various domains / entities, with the framework supporting the sha
 context, as illustrated by the screenshot below.  Here the activities are based on the selector activity pattern; since
 they are read only, a toolbar is not displayed.
 
-![Dashboard View](dashboard_view.jpg =850x)
+<img src="dashboard_view.jpg" alt="Dashboard View" width="850x">
 
 
 ## Tree View
@@ -69,12 +69,12 @@ they are read only, a toolbar is not displayed.
 Baff supports a tree view where entities can be presented as nodes in a hierarchical organization, as illustrated
 below.
 
-![Tree View](tree_view.jpg =850x)
+<img src="tree_view.jpg" alt="Tree View" width="850x">
 
 The tree view can also be used to select entities to be displayed in a form view presented alongside, where the
 form view is dynamically selected based on the entity type, as illustrated below.  
 
-![Tree Card View](tree_card.jpg =850x)
+<img src="tree_card.jpg" alt="Tree Card View" width="850x">
 
 
 ## Mobile
@@ -82,4 +82,4 @@ form view is dynamically selected based on the entity type, as illustrated below
 The Baff mobile user interface is not as rich as the web user interface, and supports a single set of activity
 tabs.  List - Form activities are supported by toggling between the list and form views, as illustrated below.
 
-![Mobile UI](mobile.jpg =850x)
+<img src="mobile.jpg" alt="Mobile UI" width="850x">
