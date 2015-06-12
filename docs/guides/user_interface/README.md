@@ -11,7 +11,7 @@ with the main navigation tabs, each representing a domain, on the first row and 
 on the second row. Workflows can be selected to provide navigation assistance and instructions.  The default theme
 is based on Neptune Touch (refer to the Ext theme guides for more information).
 
-![Application View](app_view.jpg =850x)
+<img src="app_view.jpg" alt="Application View" width="850x">
 
 
 ## Domain & Activity Views
