@@ -1,0 +1,9 @@
+create table `myapp`.refdata
+(
+    id_refdata INT not null primary key,
+    rd_domain VARCHAR(200) not null,
+    rd_class VARCHAR(200) not null,
+    rd_key VARCHAR(200) not null,
+    rd_code VARCHAR(200) not null,
+    rd_decode VARCHAR(200) not null
+)

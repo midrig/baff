@@ -1,0 +1,42 @@
+.invalid-field .x-form-field {
+    background-color: red !important;
+}
+
+.baff-list-main {
+
+  float:left;
+  font-weight: bold; 
+  font-size:90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+
+}
+  
+.baff-list-detail {
+  
+    font-weight: normal; 
+    font-size:80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+
+}
+
+.baff-toolbar {
+    background-color: red !important;
+    background-image: -webkit-linear-gradient(top, #1eace4, #1693b9 3%, #116d8c) !important;
+    height: 70% !important;
+    font-size: 70% !important;
+}
+
+.baff-button {
+    font-size: 0.8em !important;
+    width: 3.0em !important;
+    height: 3em !important;
+    text-align: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}

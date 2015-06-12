@@ -1,0 +1,38 @@
+[{
+    	
+	"title": "Baff Guides",
+	"items": [
+		
+                                {
+			"name": "framework",
+			"title": "Framework Overview",
+			"description": "An overview of the Baff framework."
+		},
+                                {
+			"name": "app_arch",
+			"title": "Application Architecture",
+			"description": "The application architecture and associated design patterns."
+		},
+                                {
+			"name": "entity_activity",
+			"title": "Entities and Activities",
+			"description": "How the application supports the domain model, including version control."
+		},
+                                {
+			"name": "user_interface",
+			"title": "User Interface",
+			"description": "The framework's look and feel, including support for tab views, dashboards and tree views."
+		},
+                                {
+			"name": "installation_setup",
+			"title": "Installation and Setup",
+			"description": "The basic steps to install and setup a Baff based application."
+		},
+                              {
+			"name": "method",
+			"title": "Development Method",
+			"description": "The basic steps to build a Baff based application."
+		}
+                
+	]
+}]	

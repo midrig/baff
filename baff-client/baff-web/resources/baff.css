@@ -1,0 +1,72 @@
+
+
+.addnew {
+    background:url(images/addnew.png) 0 no-repeat !important;
+    
+}
+.delete{
+    background:url(images/delete.png) 0 no-repeat !important;
+}
+
+.go{
+    background:url(images/go.png) 0 no-repeat !important;
+}
+.refresh{
+    background:url(images/refresh.png) 0 no-repeat !important;
+}
+.undo{
+    background:url(images/undo.png) 0 no-repeat !important;
+}
+  
+
+.save{
+    background:url(images/save.png) 0 no-repeat !important;
+}
+.search {
+    background:url(images/search.png) 0 no-repeat !important;
+    
+}
+
+.logoff{
+    background:url(images/logoff.png) 0 no-repeat !important;
+}
+
+.root {
+    background:url(images/root.png) 0 no-repeat !important;    
+}
+.workflow {
+    background:url(images/workflow.png) 0 no-repeat !important;    
+}
+.activity {
+    background:url(images/activity.png) 0 no-repeat !important;    
+}
+
+.wfprev {
+    background:url(images/wfprev.png) 0 no-repeat !important;    
+}
+.wfnext {
+    background:url(images/wfnext.png) 0 no-repeat !important;    
+}
+
+
+.newnode {
+    background:url(images/newnode.png) 0 no-repeat !important;    
+}
+
+.dash-open {
+    background:url(images/dash-open.png) 0 no-repeat !important;    
+}
+.dash-close {
+    background:url(images/dash-close.png) 0 no-repeat !important;    
+}
+
+
+.app-background {
+    background-color: #dfe8f6 !important;
+}
+
+.group-row .x-grid-cell {
+    font-weight: 700;
+}
+
+

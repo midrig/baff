@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Business Entity Example</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <div style='background:#FFFFFF; font-family: Courier New, Courier; font-size: 10pt; COLOR: #000000; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px;'><font color='#2040a0'>/**
+<br/>&nbsp;*&nbsp;Associated&nbsp;Data&nbsp;Access&nbsp;Object
+<br/>&nbsp;*/</font>
+<br/><font color='#646464'>@Repository</font>
+<br/><strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>interface</font></strong>&nbsp;MyEntityDao&nbsp;<strong><font color='#7f0055'>extends</font></strong>&nbsp;JpaRepository<MyEntity,&nbsp;Integer>&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Add&nbsp;any&nbsp;custom&nbsp;queries&nbsp;here
+</font><br/>&nbsp;&nbsp;
+<br/>}
+<br/>
+<br/><font color='#2040a0'>/**
+<br/>&nbsp;*&nbsp;Business&nbsp;Entity
+<br/>&nbsp;*/</font>
+<br/><font color='#646464'>@Entity</font>
+<br/><font color='#646464'>@Table</font>(name&nbsp;=&nbsp;<font color='#2a00ff'>"my_entity"</font>)
+<br/><font color='#646464'>@NamedQueries</font>({
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@NamedQuery</font>(name&nbsp;=&nbsp;<font color='#2a00ff'>"MyBusinessEntity.findAll"</font>,&nbsp;query&nbsp;=&nbsp;<font color='#2a00ff'>"SELECT&nbsp;e&nbsp;FROM&nbsp;MyBusinessEntity&nbsp;e"</font>)})
+<br/><strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>class</font></strong>&nbsp;MyBusinessEntity&nbsp;<strong><font color='#7f0055'>extends</font></strong>&nbsp;MappedBusinessEntity<Integer>&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>private</font></strong>&nbsp;<strong><font color='#7f0055'>static</font></strong>&nbsp;<strong><font color='#7f0055'>final</font></strong>&nbsp;<strong><font color='#7f0055'>long</font></strong>&nbsp;serialVersionUID&nbsp;=&nbsp;1L;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Identifier&nbsp;(required&nbsp;for&nbsp;all,&nbsp;recommend&nbsp;this&nbsp;to&nbsp;be&nbsp;an&nbsp;Integer
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Id</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@GeneratedValue</font>(strategy&nbsp;=&nbsp;GenerationType.IDENTITY)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Basic</font>(optional&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Column</font>(name&nbsp;=&nbsp;<font color='#2a00ff'>"id_myentity"</font>)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>private</font></strong>&nbsp;Integer&nbsp;myEntityId;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Local&nbsp;version&nbsp;control&nbsp;(required&nbsp;for&nbsp;master&nbsp;or&nbsp;if&nbsp;using&nbsp;currency&nbsp;control)
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Version</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Column</font>(name&nbsp;=&nbsp;<font color='#2a00ff'>"last_updated"</font>)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>private</font></strong>&nbsp;Timestamp&nbsp;lastUpdated;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Other&nbsp;Fields&nbsp;-&nbsp;note&nbsp;that&nbsp;these&nbsp;should&nbsp;be&nbsp;based&nbsp;on&nbsp;non-primitive&nbsp;data&nbsp;types&nbsp;to&nbsp;faciliate&nbsp;conversion&nbsp;
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Size</font>(max&nbsp;=&nbsp;200)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Column</font>(name&nbsp;=&nbsp;<font color='#2a00ff'>"otherField"</font>)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>private</font></strong>&nbsp;String&nbsp;otherField;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;More&nbsp;fields&nbsp;here
+</font><br/>&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Master&nbsp;entity&nbsp;(if&nbsp;mastered)
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@JoinColumn</font>(name&nbsp;=&nbsp;<font color='#2a00ff'>"id_master"</font>,&nbsp;referencedColumnName&nbsp;=&nbsp;<font color='#2a00ff'>"id_master"</font>)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@ManyToOne</font>(optional&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>,&nbsp;fetch&nbsp;=&nbsp;FetchType.LAZY)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>private</font></strong>&nbsp;MasterEntity&nbsp;myMaster;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Mastered&nbsp;entities&nbsp;(if&nbsp;this&nbsp;is&nbsp;the&nbsp;master)
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@OneToMany</font>(cascade&nbsp;=&nbsp;CascadeType.ALL,&nbsp;mappedBy&nbsp;=&nbsp;<font color='#2a00ff'>"product"</font>)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>private</font></strong>&nbsp;List<MasteredEntity>&nbsp;masteredEntityList;
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Constructor
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;MyBusinessEntity()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Set&nbsp;to&nbsp;true&nbsp;for&nbsp;mastered&nbsp;entities
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isMastered&nbsp;=&nbsp;<strong><font color='#7f0055'>true</font></strong>;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Set&nbsp;for&nbsp;both&nbsp;master&nbsp;and&nbsp;mastered&nbsp;entities
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;masterEntityIdMap&nbsp;=&nbsp;<font color='#2a00ff'>"myEntityId"</font>;&nbsp;<font color='#3f7f5f'>//&nbsp;master
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;masterEntityIdMap&nbsp;=&nbsp;<font color='#2a00ff'>"myMaster.id"</font>;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;mastered
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Set&nbsp;for&nbsp;both&nbsp;master&nbsp;and&nbsp;mastered&nbsp;entities
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isVersionControlled&nbsp;=&nbsp;<strong><font color='#7f0055'>true</font></strong>;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Set&nbsp;for&nbsp;mastered&nbsp;entities&nbsp;to&nbsp;load&nbsp;the&nbsp;master&nbsp;when&nbsp;this&nbsp;entity&nbsp;is&nbsp;loaded
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;This&nbsp;will&nbsp;also&nbsp;set&nbsp;the&nbsp;version&nbsp;if&nbsp;"isVersionControlled"&nbsp;above&nbsp;flag&nbsp;is&nbsp;set&nbsp;to&nbsp;true
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isMasterSetOnLoad&nbsp;=&nbsp;<strong><font color='#7f0055'>true</font></strong>;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Must&nbsp;be&nbsp;set&nbsp;for&nbsp;all&nbsp;entities&nbsp;&nbsp;&nbsp;&nbsp;
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;Integer&nbsp;getEntityId()&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;myEntitId;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Must&nbsp;be&nbsp;set&nbsp;for&nbsp;all&nbsp;entities
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;setEntityId(Integer&nbsp;id)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myEntitId&nbsp;=&nbsp;id;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Only&nbsp;required&nbsp;for&nbsp;mastered&nbsp;entities&nbsp;(master&nbsp;entities&nbsp;will&nbsp;return&nbsp;a&nbsp;reference&nbsp;to&nbsp;self)
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;BusinessEntity&nbsp;getMaster()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;myMaster;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;};
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Only&nbsp;required&nbsp;for&nbsp;mastered&nbsp;entities
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;setMaster(BusinessEntity&nbsp;master)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myMaster&nbsp;=&nbsp;(Master)master;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;};
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Return&nbsp;version&nbsp;field&nbsp;
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;Timestamp&nbsp;getLocalVersion()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;lastUpdated;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;};
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Create&nbsp;Json&nbsp;from&nbsp;this&nbsp;entitity
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;addJson(JsonObjectBuilder&nbsp;builder)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addJsonElement(builder,&nbsp;<font color='#2a00ff'>"myEntityId"</font>,&nbsp;myEntityId);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addJsonElement(builder,&nbsp;<font color='#2a00ff'>"lastUpdated"</font>,&nbsp;lastUpdated);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addJsonElement(builder,&nbsp;<font color='#2a00ff'>"otherField"</font>,&nbsp;otherField);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;More&nbsp;fields
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Deal&nbsp;with&nbsp;nullable&nbsp;referenced&nbsp;domain&nbsp;objects,&nbsp;for&nbsp;example&nbsp;to&nbsp;set&nbsp;master&nbsp;id
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>if</font></strong>&nbsp;(myMaster&nbsp;==&nbsp;<strong><font color='#7f0055'>null</font></strong>)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addJsonNull(builder,&nbsp;<font color='#2a00ff'>"masterId"</font>);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>else</font></strong>&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addJsonElement(builder,&nbsp;<font color='#2a00ff'>"masterId"</font>,&nbsp;myMaster.getEntityId());
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Set&nbsp;this&nbsp;entitiy&nbsp;from&nbsp;Json
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;fromJson(JsonObjectProcessor&nbsp;jp)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Do&nbsp;not&nbsp;allow&nbsp;existing&nbsp;values&nbsp;for&nbsp;keys&nbsp;and&nbsp;version&nbsp;fields&nbsp;to&nbsp;be&nbsp;kept&nbsp;
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myEntityId&nbsp;=&nbsp;jp.getInteger(<font color='#2a00ff'>"myEntityId"</font>,&nbsp;<strong><font color='#7f0055'>null</font></strong>);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastUpdated&nbsp;=&nbsp;jp.getTimestamp(<font color='#2a00ff'>"lastUpdated"</font>,&nbsp;<strong><font color='#7f0055'>null</font></strong>);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Other&nbsp;fields&nbsp;that&nbsp;will&nbsp;only&nbsp;be&nbsp;overwritten&nbsp;if&nbsp;input&nbsp;not&nbsp;null&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otherField&nbsp;=&nbsp;jp.getString(<font color='#2a00ff'>"otherField"</font>,&nbsp;otherField);
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Existing&nbsp;keys&nbsp;for&nbsp;master&nbsp;and&nbsp;other&nbsp;entity&nbsp;relationships&nbsp;should&nbsp;not&nbsp;be&nbsp;kept&nbsp;if&nbsp;nullable
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;masterId&nbsp;=&nbsp;jp.getInteger(<font color='#2a00ff'>"masterId"</font>,&nbsp;<strong><font color='#7f0055'>null</font></strong>);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Set&nbsp;master&nbsp;or&nbsp;other&nbsp;relationship&nbsp;entity
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>if</font></strong>&nbsp;(masterId&nbsp;!=&nbsp;<strong><font color='#7f0055'>null</font></strong>)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myMaster&nbsp;=&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;Master();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myMaster.setId(masterId);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Fo&nbsp;integrity&nbsp;validation
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;String&nbsp;doIntegrityValidation(String&nbsp;action,&nbsp;List<ValidationError>&nbsp;errors)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Returning&nbsp;a&nbsp;message&nbsp;will&nbsp;result&nbsp;in&nbsp;a&nbsp;single&nbsp;message&nbsp;being&nbsp;returned&nbsp;(ignoring&nbsp;any&nbsp;validator&nbsp;messages)
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Or&nbsp;else&nbsp;add&nbsp;to&nbsp;errors
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ValidationError&nbsp;error&nbsp;=&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;ValidationError(<font color='#2a00ff'>"field"</font>,&nbsp;<font color='#2a00ff'>"message"</font>);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errors.add(error);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;<strong><font color='#7f0055'>null</font></strong>;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Validation&nbsp;can&nbsp;also&nbsp;be&nbsp;specified&nbsp;as&nbsp;follows
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@AssertTrue</font>(message=<font color='#2a00ff'>"error&nbsp;message"</font>)&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>boolean</font></strong>&nbsp;isReference_OK()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;<strong><font color='#7f0055'>true</font></strong>;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Getters&nbsp;and&nbsp;setters
+</font><br/>&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;Integer&nbsp;getMyBusinessEntityId()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;myEntityId;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;setMyBusinessEntityId(Integer&nbsp;myEntityId)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>this</font></strong>.myEntityId&nbsp;=&nbsp;myEntityId;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;Timestamp&nbsp;getLastUpdated()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;lastUpdated;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;setLastUpdated(Timestamp&nbsp;lastUpdated)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>this</font></strong>.lastUpdated&nbsp;=&nbsp;lastUpdated;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;String&nbsp;getOtherField()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;otherField;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;setMake(String&nbsp;otherField)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>this</font></strong>.otherField&nbsp;=&nbsp;otherField;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;Master&nbsp;getMyMaster()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;myMaster;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;setMyMaster(Master&nbsp;master)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>this</font></strong>.myMaster&nbsp;=&nbsp;master;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;List<MasteredEntity>&nbsp;getMasteredEntityList()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;masteredEntityList;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>void</font></strong>&nbsp;setMasteredEntityList(List<MasteredEntity>&nbsp;masteredEntityList)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>this</font></strong>.masteredEntityList&nbsp;=&nbsp;masteredEntityList;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>}
+<br/><div style='text-align:right;BORDER-TOP: #ccc 1px dashed'><a href="http://www.togotutor.com/code-to-html/java-to-html.php" target="_blank">Code Formatted by ToGoTutor</a></div></div>      
+    </body>
+</html>

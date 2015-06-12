@@ -1,0 +1,145 @@
+drop table eval_evalgroup;
+
+create table eval_evalgroup(
+id int unsigned not null auto_increment,
+name varchar(200) not null,
+description text,
+last_updated datetime,
+
+primary key(id)
+
+)
+
+
+drop table eval_evaluator;
+
+create table eval_evaluator(
+id int unsigned not null auto_increment,
+group_id int unsigned not null,
+username varchar(200) not null,
+userrole  tinyint unsigned not null,
+last_updated datetime,
+
+primary key(id),
+foreign key(group_id) references eval_group(id)
+);
+
+create unique index eval_scorecard_index1 on eval_scorecard (
+group_id, name );
+
+
+create or replace view eval_groupforevaluator as
+select a.*, b.id AS evaluator_id, b.username, b.role from eval_group a join eval_evaluator b where a.id = b.group_id
+
+
+drop table eval_scorecard;
+
+create table eval_scorecard(
+id int unsigned not null auto_increment,
+group_id int unsigned not null,
+name varchar(200) not null,
+description text,
+last_updated datetime,
+
+primary key(id),
+foreign key(group_id) references eval_group(id)
+);
+
+create unique index eval_scorecard_index1 on eval_scorecard (
+group_id, name );
+
+
+drop table eval_criteria;
+
+create table eval_criteria(
+id int unsigned not null auto_increment,
+scorecard_id int unsigned not null,
+name varchar(200) not null,
+description text,
+weight tinyint unsigned not null,
+last_updated datetime,
+
+primary key(id),
+foreign key(scorecard_id) references eval_scorecard(id)
+);
+
+create unique index eval_criteria_index1 on eval_criteria (
+scorecard_id, name );
+
+drop table eval_option;
+
+create table eval_option(
+id int unsigned not null auto_increment,
+scorecard_id int unsigned not null,
+name varchar(200) not null,
+description text,
+last_updated datetime,
+
+primary key(id),
+foreign key(scorecard_id) references eval_scorecard(id)
+);
+
+create unique index eval_option_index1 on eval_option (
+scorecard_id, name); 
+
+drop table eval_score;
+
+create table eval_score(
+id int unsigned not null auto_increment,
+criteria_id int unsigned not null,
+option_id int unsigned not null,
+evaluator_id int unsigned not null,
+score tinyint unsigned not null,
+notes text,
+last_updated datetime,
+
+primary key(id),
+foreign key(criteria_id) references eval_criteria(id),
+foreign key(option_id) references eval_option(id),
+foreign key(evaluator_id) references eval_evaluator(id)
+);
+
+create index eval_score_index1 on eval_score (
+evaluator_id, criteria_id); 
+
+create index eval_score_index2 on eval_score (
+evaluator_id, option_id); 
+
+
+
+
+drop table eval_tpl_scorecard;
+
+create table eval_tpl_scorecard(
+id int unsigned not null auto_increment,
+owning_username varchar(200) not null,
+name varchar(200) not null,
+description text,
+tags varchar(100),
+private boolean,
+last_updated datetime,
+
+primary key(id)
+);
+
+create unique index eval_tpl_scorecard_index1 on eval_tpl_scorecard (
+name );
+
+
+drop table eval_tpl_criteria;
+
+create table eval_tpl_criteria(
+id int unsigned not null auto_increment,
+tpl_scorecard_id int unsigned not null,
+name varchar(200) not null,
+description text,
+weight tinyint unsigned not null,
+last_updated datetime,
+
+primary key(id),
+foreign key(tpl_scorecard_id) references eval_tpl_scorecard(id)
+);
+
+create unique index eval_tpl_criteria_index1 on eval_tpl_criteria (
+tpl_scorecard_id, name );
+ 

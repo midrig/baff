@@ -1,0 +1,12 @@
+
+// The following two lines import the default Sencha Touch theme. If you are building
+// a new theme, remove them and the add your own CSS on top of the base CSS (which
+// is already included in your app.json file).
+@import 'sencha-touch/default';
+@import 'sencha-touch/default/all';
+
+// Custom code goes here..
+@import '../../packages/baff-mob/sass/baff';
+
+@include icon('evalgrps', '|', 'Pictos');
+

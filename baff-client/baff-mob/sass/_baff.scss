@@ -1,0 +1,23 @@
+
+
+@include icon-font('Pictos', inline-font-files('pictos/pictos-web.woff', woff, 'pictos/pictos-web.ttf', truetype, 'pictos/pictos-web.svg', svg));
+@include icon('save', '3', 'Pictos');
+@include icon('select', '3', 'Pictos');
+@include icon('undo', '8', 'Pictos');
+@include icon('addnew', '+', 'Pictos');
+@include icon('open', 'R', 'Pictos');
+@include icon('togform', ']', 'Pictos');
+@include icon('toglist', '[', 'Pictos');
+@include icon('close', 'D', 'Pictos');
+@include icon('remove', '#', 'Pictos');
+@include icon('selectoractivity', 'n', 'Pictos');
+@include icon('formactivity', 'W', 'Pictos');
+@include icon('none', 'd', 'Pictos');
+@include icon('logoff', 'Q', 'Pictos');
+@include icon('refresh', '1', 'Pictos');
+@include icon('restart', '0', 'Pictos');
+@include icon('toggle', ';', 'Pictos');
+@include icon('user', 'U', 'Pictos');
+@include icon('usergroup', 'g', 'Pictos');
+@include icon('chart', 'Z', 'Pictos');
+

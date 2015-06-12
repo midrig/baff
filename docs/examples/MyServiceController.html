@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Service Controller Example</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <div style='background:#FFFFFF; font-family: Courier New, Courier; font-size: 10pt; COLOR: #000000; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px;'><font color='#646464'>@Controller</font>
+<br/><font color='#646464'>@RequestMapping</font>(<font color='#2a00ff'>"/mydomain"</font>)
+<br/><strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>class</font></strong>&nbsp;MyServiceController&nbsp;<strong><font color='#7f0055'>extends</font></strong>&nbsp;ServiceController&nbsp;{
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Autowired</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>protected</font></strong>&nbsp;MyService&nbsp;myService;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestMapping</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"/myentity/find"</font>,&nbsp;method&nbsp;=&nbsp;RequestMethod.GET,&nbsp;produces&nbsp;=&nbsp;{<font color='#2a00ff'>"application/json"</font>})
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@ResponseBody</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;String&nbsp;findMyEntity(
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"entityId"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>true</font></strong>)&nbsp;Integer&nbsp;entityId,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpServletRequest&nbsp;request)&nbsp;{
+<br/>&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceResponse<MyEntity>&nbsp;resp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>try</font></strong>&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceRequest<Integer>&nbsp;req&nbsp;=&nbsp;ServiceRequestFactory.getFindRequest(entityId);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;myService.findMyEntity(req);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>catch</font></strong>&nbsp;(ServiceResponseException&nbsp;valEx)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;valEx.getResult();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>catch</font></strong>&nbsp;(Exception&nbsp;ex)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;ServiceResponseFactory.getSystemFailResponse(<font color='#2a00ff'>"XXXX"</font>,&nbsp;<font color='#2a00ff'>"General&nbsp;exception:&nbsp;"</font>&nbsp;+&nbsp;ex.getMessage());
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;resp.toString();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestMapping</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"/myentity/findAll"</font>,&nbsp;method&nbsp;=&nbsp;RequestMethod.GET,&nbsp;produces&nbsp;=&nbsp;{<font color='#2a00ff'>"application/json"</font>})
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@ResponseBody</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;String&nbsp;findAllMyEntities(
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"limit"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>)&nbsp;Integer&nbsp;limit,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"page"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>)&nbsp;Integer&nbsp;page,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"sort"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>)&nbsp;String&nbsp;sort,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"start"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>)&nbsp;Integer&nbsp;start,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"filter"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>)&nbsp;String&nbsp;filter,&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpServletRequest&nbsp;request)&nbsp;{
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceResponse<MyEntity>&nbsp;resp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>try</font></strong>&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PageInfo&nbsp;pageInfo&nbsp;=&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;PageInfo(limit,&nbsp;page,&nbsp;start,&nbsp;sort,&nbsp;filter);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceRequest<Integer>&nbsp;req&nbsp;=&nbsp;ServiceRequestFactory.getFindRequest(pageInfo);
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;myService.findAllMyEntities(req);
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>catch</font></strong>&nbsp;(ServiceResponseException&nbsp;valEx)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;valEx.getResult();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>catch</font></strong>&nbsp;(Exception&nbsp;ex)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;ServiceResponseFactory.getSystemFailResponse(<font color='#2a00ff'>"XXXX"</font>,&nbsp;<font color='#2a00ff'>"General&nbsp;exception:&nbsp;"</font>&nbsp;+&nbsp;ex.getMessage());
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;resp.toString();
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestMapping</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"/myentity/save"</font>,&nbsp;method&nbsp;=&nbsp;RequestMethod.POST,&nbsp;produces&nbsp;=&nbsp;{<font color='#2a00ff'>"application/json"</font>})
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@ResponseBody</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;String&nbsp;saveMyEntity(
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"data"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>true</font></strong>)&nbsp;String&nbsp;jsonData,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"actionCode"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>)&nbsp;String&nbsp;actionCode,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpServletRequest&nbsp;request)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceResponse<MyEntity>&nbsp;resp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>try</font></strong>&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JsonObjectProcessor&nbsp;jp&nbsp;=&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;JsonObjectProcessor(jsonData);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JsonObject&nbsp;jsonEntity&nbsp;=&nbsp;jp.getJsonObject();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;myEntityId&nbsp;=&nbsp;jp.getInteger(<font color='#2a00ff'>"myEntityId"</font>,&nbsp;<strong><font color='#7f0055'>null</font></strong>);
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceRequest<Integer>&nbsp;req&nbsp;=&nbsp;ServiceRequestFactory.getSaveRequest(myEntityId,&nbsp;jsonEntity,&nbsp;actionCode);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;myService.saveMyEntity(req);
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>catch</font></strong>&nbsp;(ServiceResponseException&nbsp;valEx)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;valEx.getResult();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>catch</font></strong>&nbsp;(Exception&nbsp;ex)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;ServiceResponseFactory.getSystemFailResponse(<font color='#2a00ff'>"XXXX"</font>,&nbsp;<font color='#2a00ff'>"General&nbsp;exception:&nbsp;"</font>&nbsp;+&nbsp;ex.getMessage());
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;resp.toString();
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestMapping</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"/myentity/remove"</font>,&nbsp;method&nbsp;=&nbsp;RequestMethod.POST,&nbsp;produces&nbsp;=&nbsp;{<font color='#2a00ff'>"application/json"</font>})
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@ResponseBody</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;String&nbsp;removeMyEntity(
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"data"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>true</font></strong>)&nbsp;String&nbsp;jsonData,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@RequestParam</font>(value&nbsp;=&nbsp;<font color='#2a00ff'>"actionCode"</font>,&nbsp;required&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>)&nbsp;String&nbsp;actionCode,
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpServletRequest&nbsp;request)&nbsp;{
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceResponse<MyEntity>&nbsp;resp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>try</font></strong>&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JsonObjectProcessor&nbsp;jp&nbsp;=&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;JsonObjectProcessor(jsonData);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JsonObject&nbsp;jsonEntity&nbsp;=&nbsp;jp.getJsonObject();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;myEntityId&nbsp;=&nbsp;jp.getInteger(<font color='#2a00ff'>"myEntityId"</font>,&nbsp;<strong><font color='#7f0055'>null</font></strong>);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceRequest<Integer>&nbsp;req&nbsp;=&nbsp;ServiceRequestFactory.getRemoveRequest(myEntityId,&nbsp;jsonEntity,&nbsp;actionCode);
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;myService.removeMyEntity(req);
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>catch</font></strong>&nbsp;(ServiceResponseException&nbsp;valEx)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;valEx.getResult();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>catch</font></strong>&nbsp;(Exception&nbsp;ex)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp&nbsp;=&nbsp;ServiceResponseFactory.getSystemFailResponse(<font color='#2a00ff'>"XXXX"</font>,&nbsp;<font color='#2a00ff'>"General&nbsp;exception:&nbsp;"</font>&nbsp;+&nbsp;ex.getMessage());
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;resp.toString();
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>}
+</div>
+    </body>
+</html>

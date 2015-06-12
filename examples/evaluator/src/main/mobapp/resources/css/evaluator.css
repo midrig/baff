@@ -1,0 +1,56 @@
+.evaluator-name {
+
+    line-height: 100%;
+    font-weight: bold; 
+    font-size:90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+  
+.evaluator-description {
+    
+    line-height: 100%;
+    font-weight: normal; 
+    font-size:80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
+
+.evaluator-secondary {
+    
+    line-height: 100%;
+    font-weight: normal;
+    font-style: italic;
+    font-size:60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+} 
+
+.evaluator-bar {
+    height: 80%;
+    position: absolute;
+    left: 8px;
+    top: 5px;
+    opacity: 0.3;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+ 
+.evaluator-score {
+    
+    font-weight: bold; 
+    font-size: 100%;
+    float: right;
+    padding-top: 5px;
+    padding-right: 10px;
+
+} 
+

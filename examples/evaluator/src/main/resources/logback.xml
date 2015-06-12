@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" >
+    <contextName>Evaluator</contextName>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="TXNLOG1" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} IP: %X{clientIPaddr} U:%X{username} R:%X{clientRequest} T:%msg%n</pattern>sa
+        </encoder>
+    </appender>
+    
+    <appender name="TXNLOG2" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>../logs/applicationTransactions.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>../logs/applicationTransactions.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 30 days history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS}|%X{clientIPaddr}|%X{username}|%X{clientRequest}|%msg%n</pattern>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+    
+    <logger name="transaction.com.midrig" level="TRACE" additivity="false">    
+        <appender-ref ref="TXNLOG2" />
+        <appender-ref ref="TXNLOG1" />
+    </logger>
+    
+    <logger name="com.midrig.baff" level="TRACE" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    
+     <logger name="com.midrig.evaluator" level="TRACE" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    
+  <!-- the level of the root level is set to DEBUG by default -->
+    <root level="DEBUG">          
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

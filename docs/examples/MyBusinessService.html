@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Business Service Example</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <div style='background:#FFFFFF; font-family: Courier New, Courier; font-size: 10pt; COLOR: #000000; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px;'><font color='#2040a0'>/**&nbsp;
+<br/>&nbsp;*&nbsp;Interface&nbsp;Specification
+<br/>&nbsp;**/</font>
+<br/><strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>interface</font></strong>&nbsp;MyBusinessService&nbsp;{
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;ServiceResponse<MyEntity>&nbsp;findMyEntity(ServiceRequest<Integer>&nbsp;request);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;ServiceResponse<MyEntity>&nbsp;findAllMyEntities(ServiceRequest<Integer>&nbsp;request);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;ServiceResponse<MyEntity>&nbsp;saveMyEntity(ServiceRequest<Integer>&nbsp;request);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;ServiceResponse<MyEntity>&nbsp;removeMyEntity(ServiceRequest<Integer>&nbsp;request);
+<br/>
+<br/>}
+<br/>
+<br/><font color='#2040a0'>/**&nbsp;
+<br/>&nbsp;*&nbsp;Implementation&nbsp;
+<br/>&nbsp;**/</font>
+<br/><font color='#646464'>@Transactional</font>
+<br/><font color='#646464'>@Service</font>(<font color='#2a00ff'>"myService"</font>)
+<br/><strong><font color='#7f0055'>public</font></strong>&nbsp;<strong><font color='#7f0055'>class</font></strong>&nbsp;MyBusinessServiceImpl&nbsp;<strong><font color='#7f0055'>extends</font></strong>&nbsp;BusinessService&nbsp;<strong><font color='#7f0055'>implements</font></strong>&nbsp;MyBusinesService&nbsp;{
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Autowired</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>protected</font></strong>&nbsp;MyEntityDao&nbsp;myEntityDao;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Resource</font>&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;Validator&nbsp;validator;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;MyBusinessServiceImpl()&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>super</font></strong>();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Transactional</font>(readOnly&nbsp;=&nbsp;<strong><font color='#7f0055'>true</font></strong>,&nbsp;propagation&nbsp;=&nbsp;Propagation.SUPPORTS)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;ServiceResponse<MyEntity>&nbsp;findMyEntity(ServiceRequest<Integer>&nbsp;request)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;findEntity(myEntityDao,&nbsp;request);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Transactional</font>(readOnly&nbsp;=&nbsp;<strong><font color='#7f0055'>true</font></strong>,&nbsp;propagation&nbsp;=&nbsp;Propagation.SUPPORTS)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;ServiceResponse<MyEntity>&nbsp;findAllMyEntities(ServiceRequest<Integer>&nbsp;request)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;findPageOfEntities(request,&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;MyEntity());&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Transactional</font>(readOnly&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>,&nbsp;propagation&nbsp;=&nbsp;Propagation.REQUIRED)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;ServiceResponse<MyEntity>&nbsp;saveMyEntity(ServiceRequest<Integer>&nbsp;request)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;saveEntity(myEntityDao,&nbsp;request,&nbsp;validator,&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;MyEntity());
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Transactional</font>(readOnly&nbsp;=&nbsp;<strong><font color='#7f0055'>false</font></strong>,&nbsp;propagation&nbsp;=&nbsp;Propagation.REQUIRED)
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>public</font></strong>&nbsp;ServiceResponse<MyEntity>&nbsp;removeMyEntity(ServiceRequest<Integer>&nbsp;request)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;removeEntity(myEntityDao,&nbsp;request);
+<br/>&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#646464'>@Override</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>protected</font></strong>&nbsp;String&nbsp;validateFeasibility(ServiceRequest&nbsp;request,&nbsp;String&nbsp;action,&nbsp;MappedBusinessEntity&nbsp;revEntity,&nbsp;List<ValidationError>&nbsp;errors)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Check&nbsp;which&nbsp;type&nbsp;of&nbsp;entity&nbsp;we&nbsp;are&nbsp;dealing&nbsp;with&nbsp;(if&nbsp;this&nbsp;service&nbsp;supports&nbsp;multiple&nbsp;entities)
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>if</font></strong>&nbsp;(revEntity&nbsp;<strong><font color='#7f0055'>instanceof</font></strong>&nbsp;MyEntity)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MyEntity&nbsp;myEntity&nbsp;=&nbsp;(MyEntity)revEntity;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Check&nbsp;the&nbsp;action&nbsp;being&nbsp;performed
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>if</font></strong>&nbsp;(action.equals(MappedBusinessEntity.REC_SAVE))&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Check&nbsp;if&nbsp;the&nbsp;entity&nbsp;is&nbsp;unique
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List<MyEntity>&nbsp;list&nbsp;=&nbsp;myEntityDao.myUniqueQueryString(myEntity.getFoo(),&nbsp;myEntity.getBar());
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>boolean</font></strong>&nbsp;isUnique&nbsp;=&nbsp;revEntity.isOnlyMe(list);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>if</font></strong>&nbsp;(!isUnique)&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ValidationError&nbsp;error&nbsp;=&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;ValidationError&nbsp;(<font color='#2a00ff'>"bar"</font>,&nbsp;<font color='#2a00ff'>"must&nbsp;be&nbsp;unqiue&nbsp;for&nbsp;given&nbsp;foo"</font>);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errors.add(error);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<strong><font color='#7f0055'>else</font></strong>&nbsp;<strong><font color='#7f0055'>if</font></strong>&nbsp;(action.equals(MappedBusinessEntity.REC_REMOVE))&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>//&nbsp;Confirm&nbsp;remove&nbsp;(the&nbsp;client&nbsp;needs&nbsp;to&nbsp;set&nbsp;the&nbsp;action&nbsp;code&nbsp;equal&nbsp;to&nbsp;the&nbsp;resultCode&nbsp;and&nbsp;re-try)&nbsp;
+</font><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>if</font></strong>&nbsp;(!<font color='#2a00ff'>"REMOVE_CONF"</font>.equals(request.getActionCode()))&nbsp;{
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>throw</font></strong>&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;ServiceResponseException(ServiceResponseFactory.getWarningFailResponse(<font color='#2a00ff'>"REMOVE_CONF"</font>,&nbsp;<font color='#2a00ff'>"Are&nbsp;you&nbsp;sure"</font>));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>return</font></strong>&nbsp;<strong><font color='#7f0055'>null</font></strong>;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/>
+</div>     
+    </body>
+</html>

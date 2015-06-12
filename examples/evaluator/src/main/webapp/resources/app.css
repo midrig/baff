@@ -1,0 +1,58 @@
+.x-progress {
+  background-color: rgba(255,255,255,0) !important;
+  
+}
+
+.x-progress-bar {
+  height: 80% !important;
+  top: 10% !important;
+}
+
+.x-progress-text {
+  top: -10% !important;
+}
+
+.x-progress-text-back{
+  top: 2% !important;
+}
+
+
+.x-progress-default .x-progress-bar-default {
+    background-color: #F1C1C5 !important;
+}
+
+.chart {
+    background:url(chart.png) 0 no-repeat !important;    
+}
+
+.template {
+    background:url(template.png) 0 no-repeat !important;    
+}
+
+.evalgroup {
+    background:url(evalgroup.png) 0 no-repeat !important;    
+}
+
+.scorecard {
+    background:url(scorecard.png) 0 no-repeat !important;    
+}
+
+.criteria {
+    background:url(criteria.png) 0 no-repeat !important;    
+}
+
+
+.option {
+    background:url(option.png) 0 no-repeat !important;    
+}
+
+.score {
+    background:url(score.png) 0 no-repeat !important;    
+}
+
+
+.evalnewnode {
+    background:url(evalnewnode.png) 0 no-repeat !important;    
+}
+
+

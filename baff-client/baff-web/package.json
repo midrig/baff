@@ -1,0 +1,21 @@
+{
+    "name": "baff-web",
+    "type": "code",
+    "creator": "Midrig",
+    "summary": "Baff web framework based on Sencha ExtJs",
+    "detailedDescription": "",
+    "version": "1.0.1",
+    "compatVersion": "1.0.0",
+    "format": "1",
+    "slicer": {
+        "js": [
+            {
+                "path": "${package.dir}/sass/example/custom.js",
+                "isWidgetManifest": true
+            }
+        ]
+    },
+    "output": "${package.dir}/build",
+    "local": true,
+    "requires": []
+}
