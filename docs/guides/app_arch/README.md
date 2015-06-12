@@ -51,7 +51,7 @@ persistence routines required to support this.
 +   **Entity Definition**: Specify business entity attributes and serialization.  Typically client models 
 map directly to server entities.
 
-{@img ioc.jpg Inversion of Control}
+![Inversion of Control](ioc.jpg)
 
 
 ## Activity Design Patterns
@@ -59,7 +59,7 @@ map directly to server entities.
 To realise the benefits of the Baff, the application design must be based on the activity design 
 patterns supported by the framework as illustrated below.
 
-{@img activities.jpg Activity Patterns}
+![Activity Patterns](activities.jpg)
 
 +   **Selector Activity**: An activity to view a list of business entities of the same type, e.g.
 customers.  Variants of this pattern include filtering on specific entity properties, e.g. name or type,
@@ -73,7 +73,7 @@ of related entities, e.g. addresses for a customer.
 
 These adopt the following high level state model.
 
-{@img states.jpg State Model}
+![State Model](states.jpg)
 
 The behaviour of these activities is highly configurable to allow them to be tailored for specific needs
 and the Form Activity in particular can adopt differnt configuraitons to support the following sub patterns:

@@ -8,8 +8,7 @@ The framework may also be demarcated by those classes that are deployed on the *
 supported by Sencha ExtJS and Touch, and those that are deployed on the server, supported by 
 Spring IO and Jave EE.
 
-{@img framework.jpg Baff Framework}
-
+![Baff Framework](framework.jpg)
 
 ## Application
 

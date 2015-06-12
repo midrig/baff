@@ -6,7 +6,7 @@ A master entity is the primary entity within a domain where related entities may
 extensions of the master.  Baff supports an application design that is orientated around such a 
 domain model, as illustrated by the reference Evaluator application. 
 
-{@img entity_activity.jpg Entities and Activities}
+![Entities and Activities](entity_activity.jpg)
    
 +  There is a scorecard entity that masters criteria and options
 +  The activity that maintains the scorecard entity provides the master context to the activities that
@@ -31,7 +31,7 @@ Baff also adopts an optimistic locking strategy such that the validity of data i
 requested to be updated, rather than locking it when it is initially retrieved.  This is independent of
 whether master entity level version control is applied.
 
-{@img version_control.jpg  Version Control}
+![Version Control](version_control.jpg)
 
 ## Data Integrity
 
