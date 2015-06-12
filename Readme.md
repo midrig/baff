@@ -42,21 +42,21 @@ to develop the production solution.
 Read the guides, review the example "Evaluator" application and install the software.  For more details visit
 http://www.midrig.com/baff.
 
-[Framework Overview](https://github.com/midrig/baff/docs/guides/framework/README.md): An overview of the Baff 
+[Framework Overview](docs/guides/framework/README.md): An overview of the Baff 
 framework.
 
-[Application Architecture](https://github.com/midrig/baff/docs/guides/app_arch/README.md):  The application architecture 
+[Application Architecture](docs/guides/app_arch/README.md):  The application architecture 
 and associated design patterns.
 
-[Entities and Activities](https://github.com/midrig/baff/docs/guides/entity_activity/README.md): How the application 
+[Entities and Activities](docs/guides/entity_activity/README.md): How the application 
 supports the domain model, including version control.
 
-[User Interface](https://github.com/midrig/baff/docs/guides/user_interface/README.md): The framework's look and feel,
+[User Interface](docs/guides/user_interface/README.md): The framework's look and feel,
 including support for tab views, dashboards and tree views.
 
-[Installation and Setup](https://github.com/midrig/baff/docs/guides/installation_setup/README.md): The basic steps to 
+[Installation and Setup](docs/guides/installation_setup/README.md): The basic steps to 
 install and setup a Baff based application.
 
-[Development Method](https://github.com/midrig/baff/docs/guides/method/README.md): The basic steps to build a Baff 
+[Development Method](docs/guides/method/README.md): The basic steps to build a Baff 
 based application.
                 

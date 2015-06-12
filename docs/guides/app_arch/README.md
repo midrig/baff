@@ -13,7 +13,7 @@ and update of individual business entities.  However, the framework also support
 management of the relationships between entities as well as automation of business processes
 involving multiple activities.
 
-{@img app_arch.jpg Application Architecture}
+![Application Architecture](app_arch.jpg)
 
 +   **Domain Controller**: Controls a set of related activities, typically related to maintaining a master 
 business entity and associated child entities.
