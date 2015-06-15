@@ -9,7 +9,7 @@ Follow these steps below to include this package in your application, using Mave
 + Take a copy of "baff-X.X.X.jar", found in /target (or you can build it from source)
 + Add the package to your Maven repository
     
-    mvn install:install-file -Dfile=/path/to/baff-X.X.X.jar -DgroupId=com.midrig -DartifactId=baff -Dversion=X.X.X -Dpackaging=jar
+    mvn install:install-file -Dfile=/path/to/baff-X.X.X.jar -DpomFile=/path/to/pom.xml -DgroupId=com.midrig -DartifactId=baff -Dversion=X.X.X -Dpackaging=jar
 
 ## 2. Create your Java application
 

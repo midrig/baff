@@ -19,7 +19,7 @@ Setup the Baff Web Javascript Client (Sencha ExtJs 5).
 
 ### 1. Install the package
 
-+ Take a copy of "baff-web.pkg", found in /baff-client/web/build/baff-web (or you can build it from source)
++ Take a copy of "baff-web.pkg", found in /baff-client/build/baff-web (or you can build it from source)
 + Initialize the local respository (only do this once):
 
         sencha package repo init -name "Midrig" -email "support@midrig.com"
@@ -59,7 +59,7 @@ Setup the Baff Mobile Javascript Client (Sencha Touch 2.4).
 
 ### 1. Install the package
 
-+ Take a copy of "baff-mob.pkg", found in /baff-client/mob/build/baff-mob (or you can build it from source)
++ Take a copy of "baff-mob.pkg", found in /baff-client/build/baff-mob (or you can build it from source)
 + Initialize the local respository (only do this once):
 
         sencha package repo init -name "Midrig" -email "support@midrig.com"
@@ -118,7 +118,7 @@ Setup the Baff Java Services (Spring Framework).
 + Take a copy of "baff-X.X.X.jar", found in /target (or you can build it from source)
 + Add the package to your Maven repository
     
-        mvn install:install-file -Dfile=/path/to/baff-X.X.X.jar -DgroupId=com.midrig -DartifactId=baff -Dversion=X.X.X -Dpackaging=jar
+        mvn install:install-file -Dfile=/path/to/baff-X.X.X.jar -DpomFile=/path/to/pom.xml -DgroupId=com.midrig -DartifactId=baff -Dversion=X.X.X -Dpackaging=jar
 
 ### 2. Create your Java application
 
