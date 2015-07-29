@@ -46,7 +46,7 @@ create table group_members (
 );
 
 
-create table user_details (
+create table user_attributes (
                 username varchar(50) not null,
                 displayname varchar(50) not null,
                 email varchar(254) not null

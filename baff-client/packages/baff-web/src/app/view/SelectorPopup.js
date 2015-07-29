@@ -32,6 +32,12 @@ Ext.define('Baff.app.view.SelectorPopup', {
         */
         selectButton: 'selectBtn',
         
+        /**
+        * Specifies a reference to the refresh button for this view. If set to '' the select button will not be
+        * created, which is the default
+        */
+        refreshButton: '',
+        
         // The following specify the required user interface configuration for a popup window
         draggable: true,
         resizable: true,

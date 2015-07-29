@@ -95,7 +95,7 @@ Ext.define('Baff.app.controller.BaseDomainController', {
         /**
         * Specifies a maximum length for the title. not including the original title if this is included.
         */
-        titleLength: 10,
+        titleLength: 20,
         
         /**
         * Specifies if the original title specified in the view configuration should be included in the

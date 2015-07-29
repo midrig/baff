@@ -12,6 +12,8 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A ServiceRequest represents a requests to a service operation.
@@ -59,9 +61,8 @@ public class ServiceRequest <ID extends Serializable> extends JsonItem{
             
             if (input == null)
                 return null;
-
+           
             LinkedHashMap<String, String> hashMap = null;
-        
             
             JsonReader reader = Json.createReader(new StringReader(input));
             JsonArray array = reader.readArray();
@@ -76,7 +77,7 @@ public class ServiceRequest <ID extends Serializable> extends JsonItem{
 
                         String name = jp.getString(nameId, null);
                         String value = jp.getString(valueId, null);
-                        
+                       
                         String cv = hashMap.get(name);
                         
                         if (cv != null)

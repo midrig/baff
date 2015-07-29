@@ -27,10 +27,16 @@
 Ext.define('Baff.app.view.FilterPanel', {
     extend: 'Ext.form.Panel',
     xtype: 'filterpanel',   
+    
+    requires: [
+        'Baff.utility.widget.FilterField',
+        'Baff.utility.refdata.RefDataFilterField'
+    ],
    
     //frame: true,
     padding: '5 5 0 5',
     border: false,
+    //layout: 'form',
     
     bodyStyle: {
                 background: 'transparent'

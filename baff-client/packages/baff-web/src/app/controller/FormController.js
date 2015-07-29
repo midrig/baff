@@ -228,7 +228,7 @@ Ext.define('Baff.app.controller.FormController', {
          * Specifies if a new record should have its fields populated from context specified by 
          * {@link contextHandlerMap}, since this may typically be applied as a filter on the records fields
          */
-        setupNewRecordFromContext: false,
+        setupNewRecordFromContext: true,
         
          /**
          * Specifies if a confirmation prompt should be displayed when deleting a record
@@ -638,7 +638,7 @@ Ext.define('Baff.app.controller.FormController', {
         if (record != null && record.getEntityId() != null)
             me.modifyRecord(record, true);
         else
-            me.addRecord(true);
+            me.addRecord(true, record);
         
     },
    
@@ -660,7 +660,7 @@ Ext.define('Baff.app.controller.FormController', {
             if (record != null && record.getEntityId() != null && me.getViewExistingRecord())
                 me.modifyRecord(record, isAfterRefresh);
             else 
-                me.addRecord(isAfterRefresh);
+                me.addRecord(isAfterRefresh, record);
            
         }
 
@@ -710,7 +710,12 @@ Ext.define('Baff.app.controller.FormController', {
     modifyRecord: function(record, isAfterRefresh) {
         Utils.logger.info("FormController[" + this.identifier + "]::modifyRecord");
         var me = this;
-               
+        
+        if (record.getEntityId() == null) {
+            me.addRecord(isAfterRefresh, record);
+            return;
+        }
+        
         me.recordAction = me.entityModel.ACTION.UPDATE;    
         me.setCurrentRecord(record);   
         
@@ -741,9 +746,10 @@ Ext.define('Baff.app.controller.FormController', {
     * Enters the state of adding a new entity record by setting up the view components and loading
     * the form with a default entity.
     * @param {boolean} isAfterRefresh Flag set to true if this is following refresh
+    * @param {Baff.app.model.EntityModel} record A record to be used as a default   
     * @protected
     */    
-    addRecord: function(isAfterRefresh) {
+    addRecord: function(isAfterRefresh, newRecord) {
         Utils.logger.info("FormController[" + this.identifier + "]::addRecord");
         var me = this;
         
@@ -751,7 +757,9 @@ Ext.define('Baff.app.controller.FormController', {
         me.setCurrentRecord(null);
         
         // Create a new entity record
-        var newRecord = Ext.create(me.entityModel.getName()); 
+        if (newRecord == null)
+            newRecord = Ext.create(me.entityModel.getName()); 
+        
         me.setNewRecordDefaults(newRecord)
         
          // Load the record
@@ -783,6 +791,7 @@ Ext.define('Baff.app.controller.FormController', {
     setNewRecordDefaults: function(record) {
         var me = this;
         
+        record.setEntityId(null);
         record.setMasterEntityId(me.masterEntityId);
         
         if (me.getSetupNewRecordFromContext() && me.filterContext.getCount() > 0)

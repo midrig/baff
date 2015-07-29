@@ -214,8 +214,8 @@ Ext.define('Baff.app.view.FormView', {
             items.push({
                     xtype: me.getFormPanel(),
                     reference: me.getFormPanel(),
-                    flex: 10          
-            });
+                    flex: 10
+                });
         }
         
         return items;

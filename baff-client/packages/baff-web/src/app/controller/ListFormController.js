@@ -208,7 +208,7 @@ Ext.define('Baff.app.controller.ListFormController', {
                     // due to store buffering, but make sure we haven't got anything else selected
                     var records = me.listPanel.getSelectionModel().getSelection();
 
-                    if (records.length != 1 || records[0].getEntityId() != me.currentRecord.getEntityId())
+                    if (records.length != 1 || records[0].getEntityId() != record.getEntityId())
                         me.listPanel.getSelectionModel().deselectAll(true);
                 }
             } else {
@@ -222,11 +222,11 @@ Ext.define('Baff.app.controller.ListFormController', {
     * Calls the overridden superclass method. 
     * @protected
     */    
-    addRecord: function() {
+    addRecord: function(isAfterRefresh, record) {
         Utils.logger.info("ListFormController[" + this.identifier + "]::addRecord");
         var me = this;
         
-        me.selectRecord(null);
+        me.selectRecord(record);
         me.callParent(arguments);
  
     },
@@ -237,7 +237,7 @@ Ext.define('Baff.app.controller.ListFormController', {
     * @param {Ext.foundation.EntityModel} record The entity record to be selected
     * @protected
     */    
-    modifyRecord: function(record) {
+    modifyRecord: function(record, isAfterRefresh) {
         Utils.logger.info("ListFormController[" + this.identifier + "]::modifyRecord");
         var me = this;
         

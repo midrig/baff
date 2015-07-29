@@ -310,7 +310,7 @@ Ext.define('Baff.app.model.EntityModel', {
     getMasterEntityId: function () {
         var entityId = this.get('masterEntityId');
         
-        if (entityId == null && this.isMasterEntity()) ///XXXX
+        if (entityId == null && this.isMasterEntity()) 
             entityId = this.getEntityId();
         
         if ((entityId == null || entityId == '') && this.getMasterEntityIdProperty() != null)

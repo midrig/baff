@@ -18,12 +18,11 @@ Ext.define('Baff.utility.application.LogonWindow', {
     
     // Literals for locale override
     dtLogonTitle: 'Logon',
-    //dtLogonTitle: '&#22823;&#23478;&#22909',
     dtLogonBtn: 'Logon',
-    dtOptions: 'Options',
-    dtRegister: 'Register',
-    dtUpdate: 'Update',
-    dtReset: 'Reset',
+    dtOptions: 'Setup',
+    dtRegister: 'Register User',
+    dtUpdate: 'Update Password',
+    dtReset: 'Reset Password',
     dtUserName: 'User Name',
     dtPassword: 'Password',
     dtVersion: 'Version',

@@ -6,13 +6,18 @@ package com.midrig.baff.app.entity;
 
 import java.io.IOException;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EntityConfig {
+    
+    final protected Logger logger = LoggerFactory.getLogger(this.getClass());
     
     private boolean versionControl;   
     private boolean currencyControl;   
     private boolean setMasterOnLoad;
-
+    private boolean autoRefresh;
+    
     public boolean isVersionControl() {
         return this.versionControl;
     }
@@ -25,12 +30,18 @@ public class EntityConfig {
         return this.setMasterOnLoad;
     }
     
+    public boolean isAutoRefreshed() {
+        return this.autoRefresh;
+    }
+    
+    
     public EntityConfig() {
         
         // Defaults
         versionControl = true;
-        currencyControl = false;
+        currencyControl = true;
         setMasterOnLoad = true;
+        autoRefresh = true;
         
         Properties prop = new Properties();
 
@@ -39,22 +50,36 @@ public class EntityConfig {
                 prop.load(getClass().getClassLoader().getResourceAsStream("baff.properties"));
                 
                 if (prop != null) {
-                 
-                    versionControl = Boolean.parseBoolean(prop.getProperty("entity.versioncontrol"));
-                    currencyControl = Boolean.parseBoolean(prop.getProperty("entity.currencycontrol"));
-                    setMasterOnLoad = Boolean.parseBoolean(prop.getProperty("entity.setmasteronload"));
-                
-                    System.out.println("Loaded entity config");
+  
+                    String property = prop.getProperty("entity.versioncontrol");
                     
+                    if (property != null)
+                        versionControl = Boolean.parseBoolean(property);
+                    
+                    property = prop.getProperty("entity.currencycontrol");
+                    
+                    if (property != null)
+                        currencyControl = Boolean.parseBoolean(property);
+                    
+                    property = prop.getProperty("entity.setmasteronload");
+                    
+                    if (property != null)
+                        setMasterOnLoad = Boolean.parseBoolean(property);
+                    
+                    property = prop.getProperty("entity.autoRefresh");
+                    
+                    if (property != null)                    
+                        autoRefresh = Boolean.parseBoolean(property);
+                    
+                
                 } else {
-                     System.out.println("Could not load entity config from baff.properties");
+                     logger.info("Could not load entity config from baff.properties");
                 }
                     
-                System.out.println("vc= "  + this.isVersionControl());
-                System.out.println("cc= "  + this.isCurrencyControl());
-                System.out.println("smol= "  + this.isSetMasterOnLoad());
-                
-                
+                logger.info("Default entity version control =  "  + this.isVersionControl());
+                logger.info("Default entity currence control = " + this.isCurrencyControl());
+                logger.info("Default entity set master on load = "  + this.isSetMasterOnLoad());
+                logger.info("Default entity auto refresh = "  + this.isAutoRefreshed());
                 
 
         } catch (IOException ex) {

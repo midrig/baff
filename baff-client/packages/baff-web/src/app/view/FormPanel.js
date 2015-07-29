@@ -58,8 +58,8 @@ Ext.define('Baff.app.view.FormPanel', {
     // The following config sets up the user interface
     bodyPadding: 10,
     frame: true,
-    autoscroll: true,
-
+    scrollable: 'vertical',
+    
     fieldDefaults: {
             labelAlign: 'right'
         },
@@ -85,7 +85,8 @@ Ext.define('Baff.app.view.FormPanel', {
         Ext.suspendLayouts();
         
         this.getForm().getFields().each(function(field) {
-          field.setReadOnly(readOnly);
+          if (readOnly || field.config.readOnly !== true)
+              field.setReadOnly(readOnly);
         });
         
         Ext.resumeLayouts();

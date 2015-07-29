@@ -368,7 +368,7 @@ Ext.define('Baff.app.controller.ActivityController', {
         * event.  The context map is a list of mappings between the <b>local model field name</b> 
         * and a common context name, for example:  [{"idCustomer", "customerId"},...]
         */
-        contextSetterMap: null,
+        contextSetterMap: null,        
         
         /**
         * Specifies that the activity should be reset on context change, so any current record is deselected.
@@ -599,8 +599,10 @@ Ext.define('Baff.app.controller.ActivityController', {
         if ((!me.getDependentOnMaster() || me.isMasterSet()) &&
             (!me.getDependentOnContext() || me.isContextSet()))
             me.activityView.enable();  
-        else
+        else {
+            me.activityView.enable();
             me.activityView.disable();
+        }
     },
     
     /**
@@ -1277,6 +1279,46 @@ Ext.define('Baff.app.controller.ActivityController', {
     },
     
     /**
+     * Sets context and fires the event event
+     * @param {context} either the context name or a HashMap containing context
+     * @param {value} the context value if a name was specified for the first parameter
+     * @fires contextchange
+     */
+    setContext: function(context, value) {
+        Utils.logger.info("ActivityController[" + this.identifier + "]::setContext");
+        var me = this;
+        
+        if (me.getContextSetterMap() == null) {
+            
+            // Need to set the listener
+            var domainView = me.findParentView();
+        
+            if (domainView != null) {
+                var mainController = domainView.getController();
+
+                if (mainController != null)
+                    me.activityView.on('contextchange', mainController.onContextChange, mainController);
+
+            }
+            
+            me.setContextSetterMap([]);
+        
+        }
+        
+        var contextMap = context;
+        
+        if (typeof context  !=  "object") {
+            
+            contextMap = new Ext.util.HashMap();
+            contextMap.add(context, value);
+            
+        }
+        
+        me.fireViewEvent('contextchange', me, contextMap);
+        
+    },
+    
+    /**
     * Fires a {@link #contextchange} event if required.
     * @param {Baff.app.model.EntityModel} record The entity record being processed
     * @param {Object} contextSetterMap A context map to use if different from configuration
@@ -1444,10 +1486,14 @@ Ext.define('Baff.app.controller.ActivityController', {
          if (me.getUseVersionManager() && me.getDependentOnMaster()  && !me.entityModel.isMasterEntity()) {             
              if (Utils.versionManager.getMaster(me.entityModel.getMasterEntityType(), me.masterEntityId) == null)  {                                 
                     
-                     Utils.logger.error("ActivityController[" + this.identifier + "]::checkDataIntegrity - failed for type= " + me.entityModel.getMasterEntityType() + " , id= " + me.masterEntityId);
+                    Utils.logger.error("ActivityController[" + this.identifier + "]::checkDataIntegrity - failed for type= " + me.entityModel.getMasterEntityType() + " , id= " + me.masterEntityId);
                     
                     var domainView = me.findParentView();
                     domainView.fireEvent('dataintegrityissue', me);                    
+                    
+                    if (me.getView().isFloating())
+                        me.getView().close();
+                    
                     return false;
                     
                 }
@@ -2204,7 +2250,7 @@ Ext.define('Baff.app.controller.ActivityController', {
     showWaitMask: function (show) {
         var me = this;        
          
-        if (Utils.globals.viewport != null) {
+        if (!me.getView().isFloating() && Utils.globals.viewport != null) {
             Utils.globals.viewport.showWaitMask(show, me.ID);
         
         } else {

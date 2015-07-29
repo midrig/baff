@@ -83,12 +83,13 @@ Ext.define('Baff.app.view.ListFormView', {
     setupItems: function() {
         var me = this;
         
-        var items = me.getMyItems();
+        var items = me.getMyItems();        
+        var margin = (me.getLayout().type == 'hbox' ? '0 5 0 0' : '0 0 5 0');
         
         var listPanel = {
                         xtype: me.getListPanel(),
                         reference: me.getListPanel(),
-                        margin: '0 5 0 0',
+                        margin: margin,
                         flex: me.getListFlex()
                     };
             

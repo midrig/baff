@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Resource;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolation;
@@ -55,7 +55,7 @@ public abstract class BusinessService {
     /**
      * The injected entity manager.
      */
-    @Resource
+    @PersistenceContext
     protected EntityManager em;
     
     /**
@@ -229,7 +229,7 @@ public abstract class BusinessService {
         T revEntity = prepareForSave(entityDao, request, newEntity);
         
         // Check the entity version
-        verifyCurrentVersion(MappedBusinessEntity.REC_SAVE, revEntity);
+        verifyCurrentVersion(revEntity);
              
         // Do  validation (throws exceptions)
         validateSave(request, validator, revEntity);
@@ -241,7 +241,7 @@ public abstract class BusinessService {
         String message = doBusinessOperations(request, MappedBusinessEntity.REC_SAVE, storedEntity);
              
         // Store the updated entity
-        return ServiceResponseFactory.getSuccessResponse(storedEntity, storedEntity.getMaster(), message);
+        return ServiceResponseFactory.getSuccessResponse(storedEntity, storedEntity.getMasterEntity(), message);
 
     }
     
@@ -305,7 +305,6 @@ public abstract class BusinessService {
                     // The reference master must be created and populated with the id           
                     curEntity = (T) revEntity.getNewInstance();
                     BusinessEntity master = getEntity(revEntity.getMaster());
-
                     curEntity.setMaster(master);
                     revEntity.setReferenceEntity(curEntity);
                 }
@@ -348,14 +347,12 @@ public abstract class BusinessService {
             // will not reflect the actual stored state. 
             // This updates the version control settings
             // This also removes the reference entity, which is no longer relevant
-            em.refresh(storedEntity);
+            if (storedEntity.isIsAutoRefreshed())
+                em.refresh(storedEntity);
             
             
             // Ensure the version and master are populated
             storedEntity.setMasterAndVersion();
-            
-            // Clear the entity manager to avoid retrieving out of date entities
-            em.clear();
             
             
         } catch (JpaOptimisticLockingFailureException ex) {
@@ -395,7 +392,7 @@ public abstract class BusinessService {
         T remEntity = prepareForRemove(entityDao, request);
         
         // Check the entity version
-        verifyCurrentVersion(MappedBusinessEntity.REC_REMOVE, remEntity);
+        verifyCurrentVersion(remEntity);
              
         // Do  validation (throws exceptions)
         validateRemove(request, remEntity);
@@ -404,7 +401,7 @@ public abstract class BusinessService {
         String message = doBusinessOperations(request, MappedBusinessEntity.REC_REMOVE, remEntity);
         
         // Remove the entity
-        executeRemove(entityDao, remEntity);
+        executeRemove(entityDao, (T)remEntity.getReferenceEntity());
         
         return ServiceResponseFactory.getSuccessResponse(message);
     
@@ -433,7 +430,7 @@ public abstract class BusinessService {
         
         try {
 
-        T curEntity = entityDao.findOne(idEntity);
+            T curEntity = entityDao.findOne(idEntity);
 
             if (curEntity == null) {
                 // If it's been removed, assume an update has taken place
@@ -474,14 +471,14 @@ public abstract class BusinessService {
            
             // Delete the reference entity, i.e. the one retrieved as it
             // will have the links to any dependants established, so these will be deleted too
-            entityDao.delete((T)remEntity.getReferenceEntity());
+            entityDao.delete((T)remEntity);
              
             // Flush to ensure all changes are reflected on the database (within this txn)
             entityDao.flush(); 
             em.flush();
             
             // Clear the entity manager to avoid retrieving out of date entities
-            em.clear();
+            em.detach((T)remEntity);
             
         
         } catch (JpaOptimisticLockingFailureException ex) {
@@ -590,10 +587,9 @@ public abstract class BusinessService {
      * Throws a {@link  ServiceResponseException} containing an optimistic lock exception if the entity
      * is out of date.  If not, then the master entity version is updated.
      * 
-     * @param action the type of action, {@link #REC_SAVE} or {@link #REC_REMOVE}.
      * @param revEntity the revised entity.
      */
-    protected void verifyCurrentVersion(String action, MappedBusinessEntity revEntity) {           
+    protected void verifyCurrentVersion(MappedBusinessEntity revEntity) {           
         
         boolean isFresh = revEntity.isCurrentVersion();
  
@@ -621,9 +617,9 @@ public abstract class BusinessService {
         BusinessEntity master;
         
         if (revEntity.getReferenceEntity() != null)
-            master = revEntity.getReferenceEntity().getMaster();
+            master = revEntity.getReferenceEntity().getMasterEntity();
         else
-            master = revEntity.getMaster();
+            master = revEntity.getMasterEntity();
         
         try {
 

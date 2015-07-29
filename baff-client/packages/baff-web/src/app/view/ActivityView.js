@@ -42,7 +42,15 @@ Ext.define('Baff.app.view.ActivityView', {
          * Specifies if this is view is to be displayed in a dashboard - see @link Baff.app.view.DashboardView}
          * If this is the case it should be read-only; and typically present a single component (e.g. list, form, etc.)
          */
-        dashlet: false
+        dashlet: false,
+        
+        /**
+         * Specifies the layout; change to 'vbox' if desired
+         */ 
+        layout: {
+            type: 'hbox',  
+            align:'stretch' 
+        }
         
     },
 
@@ -53,12 +61,6 @@ Ext.define('Baff.app.view.ActivityView', {
     
     bodyStyle: {
         background: 'transparent'
-    },
-
-    // Default layout
-    layout: {
-        type: 'hbox',  
-        align:'stretch' 
     },
 
     /**

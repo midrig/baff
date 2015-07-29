@@ -105,7 +105,15 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
     protected boolean isMasterSetOnLoad;
     
     /**
+     * Specifies if the {@link BusinessService} should automatically refresh this entity when it is saved.
+     * This may not be desirable if ORM cascade the refresh.
+     */
+    protected boolean isAutoRefreshed;
+   
+    /**
      * Set in constructor to map to the master entity identifier key field(s).
+     * This is used to filter any queries based on the overall master entity id; this may not be required if filtering on
+     * a unique context identifier (e.g. direct master identifier), in which case there is no need to set this. 
      * An example if using a single key is "master.masterId".  Multiple keys should be pipe delimited 
      * string onto this entity's for example. "fieldA||fieldB" (ignoring the middle field)
      */
@@ -182,8 +190,7 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
      * @param jp the JsonObjectProcessor to retrieve the data from.
      */  
     public abstract void fromJson(JsonObjectProcessor jp);
-   
-  
+    
     /**
      * Constructs the entity.
      * The following properties may be set here:
@@ -199,12 +206,14 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
         this.isVersionControlled = entityConfig.isVersionControl();
         this.isCurrencyControlled = entityConfig.isCurrencyControl();
         this.isMasterSetOnLoad = entityConfig.isSetMasterOnLoad();
+        this.isAutoRefreshed = entityConfig.isAutoRefreshed();
         this.isMastered = false;
         
     }
     
    /**
-     * Returns the master of this entity.
+     * Returns the direct master (parent) of this entity.
+     * Note that this is not necessarily the overall master; this is obtained via {@link #getMasterEntity}. 
      * Must be overridden if mastered.  Otherwise returns a reference to self.
      * 
      * @return the master entity.
@@ -238,7 +247,7 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
      * @return the version.
      */  
    public Timestamp getOwnVersion() {
-        logger.error("Override BaseEntity::getLocalVersion");
+        logger.error("Override BusinessEntityEntity::getOwnVersion");
         return null;
    };
    
@@ -315,16 +324,6 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
         
     }  
     
-    /**
-     * Converts this entity to a String.
-     * 
-     * @return the String representing this entity.
-     */  
-    @Override
-    public String toString() {
-    
-        return toJsonString(toJson());
-    }
     
     /**
      * Sets this entity from a Json Object.
@@ -441,6 +440,31 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
         
     };
     
+/**
+     * Gets the overall master entity for this entity.
+     * This will be a itself if it is a master.
+     * Will return null if the master has not been loaded.
+     * 
+     * @return the master entity.
+     */  
+    public BusinessEntity getMasterEntity() {
+    
+        BusinessEntity masterEntity = null;
+        
+        if (isMastered) {            
+            masterEntity = getMaster();
+
+            if (masterEntity != null) {
+                masterEntity = masterEntity.getMaster();
+            }              
+        } else {           
+            masterEntity = this;
+        }
+        
+        return masterEntity;
+    }
+    
+    
     /**
      * Gets the master entity identifier for this entity.
      * This will be a it's own identifier if it is a master.
@@ -454,15 +478,10 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
         
         masterEntityId = null;
         
-        if (isMastered) {            
-            BusinessEntity masterEntity = getMaster();
-
-            if (masterEntity != null) {
-                masterEntityId = masterEntity.getMasterEntityId(); // This could cascade
-            }              
-        } else {           
-            masterEntityId = getEntityId().toString();
-        }
+        BusinessEntity master = getMasterEntity();
+        
+        if (master != null)
+            masterEntityId = master.getEntityId().toString();
         
         return masterEntityId;
     };
@@ -507,16 +526,12 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
          
         versionControl = null;
         
-        if (isMastered) {            
-            BusinessEntity masterEntity = getMaster();
+        BusinessEntity masterEntity = getMasterEntity();
 
-            if (masterEntity != null) {
-                versionControl = masterEntity.getVersion(); 
-            }                
-        } else {           
-            versionControl = getOwnVersion();
+        if (masterEntity != null) {
+            versionControl = masterEntity.getOwnVersion(); 
         }
-        
+            
         return versionControl;
     };  
    
@@ -722,7 +737,7 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
                     }
                     
                     whereClause += "e." + filterProp;
-                    
+                      
                     if (filterValue.contains("|")) {
                         String [] values = filterValue.split("\\|", -1);
 
@@ -883,6 +898,10 @@ public abstract class BusinessEntity<ID extends Serializable> extends JsonItem i
 
     public void setMessageHelper(MessageHelper messageHelper) {
         this.messageHelper = messageHelper;
+    }
+
+    public boolean isIsAutoRefreshed() {
+        return isAutoRefreshed;
     }
 
 

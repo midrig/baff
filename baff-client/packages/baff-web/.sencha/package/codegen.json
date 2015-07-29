@@ -34,7 +34,7 @@
         "pkgName": "baff-web",
         "pkgType": "code",
         "senchadir": ".sencha",
-        "touchRelPath": "../../${touch.dir}"
+        "touchRelPath": "${touch.dir}"
       }
     },
     "sass/example/theme.html": {
@@ -45,7 +45,7 @@
         "pkgName": "baff-web",
         "pkgType": "code",
         "senchadir": ".sencha",
-        "touchRelPath": "../../${touch.dir}"
+        "touchRelPath": "${touch.dir}"
       }
     },
     "sass/config.rb": {
@@ -56,7 +56,7 @@
         "pkgName": "baff-web",
         "pkgType": "code",
         "senchadir": ".sencha",
-        "touchRelPath": "../../${touch.dir}"
+        "touchRelPath": "${touch.dir}"
       }
     },
     "sass/etc/all.scss": {
@@ -67,7 +67,7 @@
         "pkgName": "baff-web",
         "pkgType": "code",
         "senchadir": ".sencha",
-        "touchRelPath": "../../${touch.dir}"
+        "touchRelPath": "${touch.dir}"
       }
     },
     "package.json": {
@@ -78,7 +78,7 @@
         "pkgName": "baff-web",
         "pkgType": "code",
         "senchadir": ".sencha",
-        "touchRelPath": "../../${touch.dir}"
+        "touchRelPath": "${touch.dir}"
       }
     },
     ".sencha/package/build.properties": {
@@ -89,7 +89,7 @@
         "pkgName": "baff-web",
         "pkgType": "code",
         "senchadir": ".sencha",
-        "touchRelPath": "../../${touch.dir}"
+        "touchRelPath": "${touch.dir}"
       }
     },
     ".sencha/package/testing.properties": {
@@ -100,7 +100,7 @@
         "pkgName": "baff-web",
         "pkgType": "code",
         "senchadir": ".sencha",
-        "touchRelPath": "../../${touch.dir}"
+        "touchRelPath": "${touch.dir}"
       }
     },
     ".sencha/package/sencha.cfg": {
@@ -111,7 +111,7 @@
         "pkgName": "baff-web",
         "pkgType": "code",
         "senchadir": ".sencha",
-        "touchRelPath": "../../${touch.dir}"
+        "touchRelPath": "${touch.dir}"
       }
     }
   }

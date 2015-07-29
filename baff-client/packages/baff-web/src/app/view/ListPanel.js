@@ -40,9 +40,8 @@ Ext.define('Baff.app.view.ListPanel', {
     xtype: 'listpanel',
     
     requires: ['Ext.grid.filters.Filters',
-                     'Baff.app.view.FilterField',
-                     'Baff.utility.refdata.RefDataColumn',
-                     'Baff.utility.refdata.RefDataFilterField'
+                     'Baff.app.view.FilterPanel',
+                     'Baff.utility.refdata.RefDataColumn'
                  ],
                  
     // Display text for override in locale file 

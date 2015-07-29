@@ -297,7 +297,7 @@ public class ServiceResponse<T extends JsonItem> extends JsonItem {
                         builder.add("data", data.get(0));
                     
                 } else {
-            
+                    
                     final JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
                     for (JsonObject json : data) {

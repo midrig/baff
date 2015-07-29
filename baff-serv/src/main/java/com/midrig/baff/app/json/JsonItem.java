@@ -4,11 +4,14 @@ package com.midrig.baff.app.json;
 import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 import javax.json.JsonWriter;
+import static javax.management.Query.value;
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -160,6 +163,40 @@ public abstract class JsonItem{
     }
     
     /**
+     * Adds a Json item to the Json object builder for the given property name.
+     * 
+     * @param builder the Json object builder to add the value to.
+     * @param name the property name.
+     * @param item the JsonItem.
+     */   
+    public static void addJsonItem(JsonObjectBuilder builder, String name, JsonItem item) {
+        if (item == null) {
+            builder.add(name, JsonValue.NULL);
+        } else {
+            builder.add(name, item.toJson());
+        }
+    }
+    
+    /**
+     * Adds an array of Json items to the Json object builder for the given property name.
+     * 
+     * @param builder the Json object builder to add the value to.
+     * @param name the property name.
+     * @param list the list of JsonItems
+     */   
+    public static void addJsonItems(JsonObjectBuilder builder, String name, List<JsonItem> list) {
+        if (list == null) {
+            builder.add(name, JsonValue.NULL);
+        } else {
+            final JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+            for (JsonItem item : list) {
+                arrayBuilder.add(item.toJson());
+            }
+            builder.add(name, arrayBuilder);
+        }
+    }
+    
+    /**
      * Converts a Json object to a Json encoded string.
      * 
      * @param object the Json object to be converted
@@ -174,6 +211,17 @@ public abstract class JsonItem{
         }
 
         return stWriter.toString();
+    }
+    
+    /**
+     * Converts this item to a String.
+     * 
+     * @return the String representing this entity.
+     */  
+    @Override
+    public String toString() {
+    
+        return toJsonString(toJson());
     }
     
     

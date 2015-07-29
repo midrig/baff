@@ -57,7 +57,8 @@ Ext.define('Baff.utility.application.RegisterUserWindow', {
                         name: 'displayName',
                         fieldLabel: me.dtDisplayName,
                         vtype: 'alpha',
-                        allowBlank: false,
+                        allowBlank: Utils.globals.showDisplayName ? false : true,
+                        hidden: Utils.globals.showDisplayName ? false : true,
                         validateOnBlur: true
                     }
                 ]}],

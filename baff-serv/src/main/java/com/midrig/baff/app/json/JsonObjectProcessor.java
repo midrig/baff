@@ -11,6 +11,7 @@ import javax.json.Json;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonString;
 import javax.json.JsonValue;
 import javax.json.JsonWriter;
 import org.slf4j.Logger;
@@ -285,11 +286,18 @@ public class JsonObjectProcessor {
         try {
             JsonValue jsonValue = this.getJsonObject().get(name);
             
+             logger.debug("JOP setString for type [" + jsonValue.getValueType() + "], [" + name + "] = [" + jsonValue + "]");
+            
             switch (jsonValue.getValueType()) {
 
                 case NULL:
                     this.stringVal = null;
                     this.found = true;
+                    break;
+                case STRING:
+                    this.stringVal = ((JsonString) jsonValue).getString();
+                    this.found = true; 
+                    break;
                 default:
                     this.stringVal = jsonValue.toString();
                     this.found = true; 
@@ -433,9 +441,10 @@ public class JsonObjectProcessor {
                 case NULL:
                     this.dateVal = null;
                     this.found = true;
+                    break;
                 default:
                     try {
-                        this.dateVal = DateFormat.getDateInstance().parse(jsonValue.toString());
+                        this.dateVal = DateFormat.getDateInstance().parse(((JsonString)jsonValue).getString());
                         this.found = true; 
                     } catch (ParseException ex) {
                         logger.debug("setDate: failed to set {}", name);
@@ -460,8 +469,9 @@ public class JsonObjectProcessor {
                 case NULL:
                     this.timestampVal = null;
                     this.found = true;
+                    break;
                 default:
-                    this.timestampVal = Timestamp.valueOf(jsonValue.toString());
+                    this.timestampVal = Timestamp.valueOf(((JsonString)jsonValue).getString());
                     this.found = true; 
                     break;
             }

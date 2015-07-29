@@ -23,11 +23,16 @@ Ext.define('Baff.utility.versionmanager.VersionManager', {
      */  
     masterStore: null,
     
+    HTTP_RESPONSE_OK: 200,
+    dtSystemErrorTitle: 'System Error',
+    dtSystemError: 'A system error has occurred',
+    
     /**
      * Sets the {@link masterStore}
      */  
-    constructor: function() {
+    constructor: function(config) {
  
+        this.mixins.observable.constructor.call(this, config);
         this.masterStore = Ext.create('Baff.utility.versionmanager.MasterStore');
         
     },
@@ -176,7 +181,36 @@ Ext.define('Baff.utility.versionmanager.VersionManager', {
                 },
             callback: function(record, operation) {
                 
-                if (!operation.success || operation.getRecords().length == 0) {
+                var response = operation.getResponse();
+
+                if (!operation.success && response !=null) {
+                        
+                    var message;
+                    
+                    if (response.status != me.HTTP_RESPONSE_OK) {
+                        message = me.dtResponseFailMsg + response.status + " (" + response.statusText + ")"; 
+                    } else {
+                        var jsonResponse = Ext.decode(response.responseText);
+                        message = jsonResponse.message;
+                    }
+                    
+                    var callback = function() {
+                        if (Utils.globals.application != null)
+                            Utils.globals.application.fireEvent('systemfailure');
+                        else {
+                            Utils.entityStoreManager.flushMasteredStores(type, id, true);
+                            me.fireEvent('masterload', type, id, true);
+                        } 
+                    };
+                         
+                         
+                   if (Utils.globals.viewport != null)
+                       Utils.globals.viewport.showAlertMessage(me.dtSystemErrorTitle, message, callback);
+                   else
+                       Ext.Message.alert(me.dtSystemErrorTitle, message, callback);
+                   
+                    
+                } else if (operation.getRecords().length == 0) {
                     
                     Utils.logger.info("VersionManager::loadMaster, failed to load master of type= " + type + " ,id= " + id);
                     

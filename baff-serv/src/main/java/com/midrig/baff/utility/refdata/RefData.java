@@ -3,6 +3,7 @@ package com.midrig.baff.utility.refdata;
 
 import com.midrig.baff.app.entity.MappedBusinessEntity;
 import com.midrig.baff.app.json.JsonObjectProcessor;
+import java.sql.Timestamp;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -81,6 +82,10 @@ public class RefData extends MappedBusinessEntity<Integer> {
         idRefdata = id;
     }
     
+    @Override
+    public Timestamp getOwnVersion() {
+        return null;
+   };
     
     
     @Override

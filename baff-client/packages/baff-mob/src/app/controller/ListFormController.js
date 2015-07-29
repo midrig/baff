@@ -319,7 +319,7 @@ Ext.define('Baff.app.controller.ListFormController', {
                     // due to store buffering, but make sure we haven't got anything else selected
                     var records = me.listPanel.getSelection(); 
 
-                    if (records.length != 1 || records[0].getEntityId() != me.currentRecord.getEntityId())
+                    if (records.length != 1 || records[0].getEntityId() != record.getEntityId())
                         me.listPanel.deselectAll(true);  
                 }
             } else {

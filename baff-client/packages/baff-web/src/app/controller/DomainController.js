@@ -624,13 +624,10 @@
         Utils.logger.info("DomainController[" + this.identifier + "]::onNewTab");
         var me = this;
         
-        var popup = (newView.popupSelector != null ? newView.popupSelector : '');
-        
-        var newtab = Ext.widget(newView.newType, {title: newView.newTitle, fromNew: true, popupSelector: popup});
-        var addtab = newView.cloneConfig();
-        
+        var popup = (newView.popupSelector != null ? newView.popupSelector : '');        
+        var addtab = newView.cloneConfig();        
         me.domainView.remove(newView);
-        me.domainView.add(newtab);
+        var newtab = me.domainView.add({xtype: newView.newType, title: newView.newTitle, fromNew: true, popupSelector: popup});
         me.domainView.add(addtab);
         
         // Setup context

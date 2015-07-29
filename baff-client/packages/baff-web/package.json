@@ -17,5 +17,7 @@
     },
     "output": "${package.dir}/build",
     "local": true,
-    "requires": []
+    "requires": [        
+        "ext-ux"
+        ]
 }

@@ -106,6 +106,12 @@ Ext.define('Baff.app.model.EntityStore', {
      */
     contextFilters: null,
     
+    /**
+     * Indicates that the load requests from the ext framework should be processed; used to suppress automatic
+     * loads due to filtering.
+     */
+    allowLoad: true,
+    
     
     // Other Ext.data.BufferedStore configurations to manage buffer processing
     leadingBufferZone: 250,
@@ -184,9 +190,11 @@ Ext.define('Baff.app.model.EntityStore', {
     /**
      * Loads the store - manages store load state
      */
-    load: function() {
-        this.hasLoaded = false;
-        this.callParent(arguments);
+    load: function(options) {
+        if (this.allowLoad) {
+            this.hasLoaded = false;
+            this.callParent(arguments);
+        }
     },
     
     
@@ -282,9 +290,9 @@ Ext.define('Baff.app.model.EntityStore', {
                         value: masterEntityId
                     });
 
-                me.setAutoFilter(false);
+                me.setAllowLoad(false);
                 me.getFilters().add(me.masterFilter);
-                me.setAutoFilter(true);
+                me.setAllowLoad(true);
             }               
         }
         
@@ -303,7 +311,8 @@ Ext.define('Baff.app.model.EntityStore', {
         if (entity.getEntityId() != null)
             return this.findRecord('entityId', entity.getEntityId(), 0, false, true, true);
         else
-            return null;
+            return this.getById(entity.getId()); // For 'dummy' records
+            
     },
     
     /**
@@ -315,12 +324,12 @@ Ext.define('Baff.app.model.EntityStore', {
         var me = this;
         
         auto = (auto == null ? true : false);
-        me.setAutoFilter(auto);
+        me.setAllowLoad(auto);
 
         me.fieldFilters.add(filter);
         me.getFilters().add(filter);
         
-        me.setAutoFilter(true);
+        me.setAllowLoad(true);
         
     },
 
@@ -334,12 +343,12 @@ Ext.define('Baff.app.model.EntityStore', {
         var me = this;
         
         auto = (auto == null ? true : false);
-        me.setAutoFilter(auto);
+        me.setAllowLoad(auto);
 
         me.fieldFilters.remove(filter);
         me.getFilters().remove(filter);
 
-        me.setAutoFilter(true);
+        me.setAllowLoad(true);
         
     },
     
@@ -353,13 +362,13 @@ Ext.define('Baff.app.model.EntityStore', {
         if (me.fieldFilters.length > 0) {
 
             auto = (auto == null ? false : true);
-            me.setAutoFilter(auto);
+            me.setAllowLoad(auto);
 
             me.removeAll();
             me.getFilters().remove(me.fieldFilters.items);
             me.fieldFilters.removeAll();
             
-            me.setAutoFilter(true);
+            me.setAllowLoad(true);
         
         }
         
@@ -408,7 +417,7 @@ Ext.define('Baff.app.model.EntityStore', {
         
         } else {
             
-            me.setAutoFilter(false);
+            me.setAllowLoad(false);
             me.removeAll();
             
             if (me.contextFilters.length > 0)
@@ -420,12 +429,19 @@ Ext.define('Baff.app.model.EntityStore', {
             me.contextFilters.removeAll();
             me.contextFilters.add(filters);
             
-            me.setAutoFilter(true);
+            me.setAllowLoad(true);
             
         }
         
         return false;
         
+    },
+    
+    /**
+     * Sets the auto filter flag
+     */
+    setAllowLoad: function(allowLoad) {
+        this.allowLoad = allowLoad;
     },
     
     // Override to work around an exception that occurs when sorting on a field with a row selected
